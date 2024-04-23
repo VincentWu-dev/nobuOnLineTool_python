@@ -8,6 +8,8 @@ import win32api,win32gui,win32con
 import sys
 from python_imagesearch.imagesearch import *
 import pywinauto
+import nobutool_utils as nbut
+
 
 nobu_hWndDict ={}
 
@@ -97,6 +99,7 @@ def nobu_manufacture_click(curHwnd):
 #send keyboard by pywinauto send_keystrokes
 def nobu_template_func(hwnd,  key: str, holdTime):
     #key = ord(key.upper())
+    hwnd = win32gui.FindWindow(nbut.NOTEPAD_PLUS_CLASS_NAME, None)
     print("hwnd: %x" %(hwnd))
     proc_id = pywinauto.application.process_from_module("nobolHD.bng")
     #testapp = pywinauto.Application().connect(process = proc_id)
@@ -118,11 +121,12 @@ def nobu_template_func(hwnd,  key: str, holdTime):
 if __name__ == '__main__':
     argv = sys.argv
     cmd = -1
+    curHwnd = 0
     if (len(argv)>1):
         cmd = int(argv[1])
         print("cmd: %d" % cmd)
 
-    find_window_list("Nobunaga Online Game MainFrame")
+    find_window_list(nbut.NOBUON_CLASS_NAME)
     for key in nobu_hWndDict:
        if key.find("NO:1") != -1 or key.find("Nobunaga Online HD Tc") != -1:
           print("Found "+key)
