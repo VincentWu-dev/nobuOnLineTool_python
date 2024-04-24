@@ -17,37 +17,35 @@ class NobuOnContext:
         self.rect = win32gui.GetWindowRect(hwnd)
         self.img_dict = nbut.nobu_load_img()
     
-    @classmethod
-    def getRect(cls):
-        return cls.rect
+    def getRect(self):
+        return self.rect
 
 
 class CombatState:
-    def __init__(self, state):
+    def __init__(self,nb_context, state=nbut.NOBUON_IDLE_STATE):
         self.curState = state
         self.nextState = nbut.NOBUON_IDLE_STATE
+        self.context = nb_context
     
     def checkInCombatState(self):
-        rect = NobuOnContext.rect()
+        rect = self.context.getRect()
         while True:
-            if nbut.nobu_is_in_combat(rect):
-                t1 = time.time()
-                while (time.time() - t1) < 0.5: #keep checking in 0.5 sec
-                    if not nbut.nobu_is_in_combat(rect):
-                        return False
-                
-            return True
+            if nbut.nobu_is_in_combat(rect):               
+                return True
+            time.sleep(0.1)
     
-    def checkOutCombatState(self):
-        rect = NobuOnContext.rect()
+    def checkEndCombatState(self):
+        rect = self.context.getRect()
         while True:
             if nbut.nobu_is_out_combat(rect):
                 t1 = time.time()
-                while (time.time() - t1) < 0.5: #keep checking in 0.5 sec
+                while (time.time() - t1) < 2: #keep checking in 0.5 sec
+                    time.sleep(0.2)
                     if not nbut.nobu_is_out_combat(rect):
                         return False
                 
-            return True
+                return True
+            time.sleep(0.2)
 
         
 

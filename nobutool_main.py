@@ -66,15 +66,21 @@ def nobu_manufacture_click(curHwnd, curApp):
         nbut.nobu_send_key(curHwnd, curApp, "ENTER")
     time.sleep(0.1)
 
-def nobu_template_func(curHwnd, curApp):
+def nobu_template_func(nb_context):
    isStop = False
    keyEnter = "ENTER"
 
-   rect = win32gui.GetWindowRect(curHwnd)
+   #rect = win32gui.GetWindowRect(curHwnd)
    curMode = 0
 
-   cb_state = CombatState()
-   
+   cb_state = CombatState(nb_context)
+   '''
+   while True:
+      if nbut.nobu_is_in_combat(nb_context.getRect()):
+         print("IN Combat!!")
+         break
+   '''
+
    while True:
     match curMode:
         case 0:
@@ -83,8 +89,8 @@ def nobu_template_func(curHwnd, curApp):
             curMode = 1
           
         case 1:
-          if cb_state.checkOutCombatState():
-            print("Combat OUT!!")
+          if cb_state.checkEndCombatState():
+            print("Combat END!!")
             curMode = 2
           
         case _:
@@ -100,11 +106,11 @@ if __name__ == '__main__':
         cmd = int(argv[1])
         print("cmd: %d" % cmd)
 
-    #find_window_list(nbut.NOBUON_CLASS_NAME)
-    #curHwnd = get_curHwnd(nbut.NOBUON_TITLE_NAME)
+    find_window_list(nbut.NOBUON_CLASS_NAME)
+    curHwnd = get_curHwnd(nbut.NOBUON_TITLE_NAME)
 
-    find_window_list(nbut.NOTEPAD_PLUS_CLASS_NAME)
-    curHwnd = get_curHwnd(nbut.NOTEPAD_PLUS_TITLE_NAME)
+    #find_window_list(nbut.NOTEPAD_PLUS_CLASS_NAME)
+    #curHwnd = get_curHwnd(nbut.NOTEPAD_PLUS_TITLE_NAME)
     '''
     for key in nobu_hWndDict:
        if key.find("NO:1") != -1 or key.find("Nobunaga Online HD Tc") != -1:
@@ -123,6 +129,6 @@ if __name__ == '__main__':
         case 0:
             nobu_manufacture_click(curHwnd, curApp)
         case 1:
-            nobu_template_func(curHwnd, curApp)
+            nobu_template_func(nb_context)
         case _:
             print("No cmd to run")
