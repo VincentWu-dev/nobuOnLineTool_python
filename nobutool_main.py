@@ -9,6 +9,7 @@ import sys
 from python_imagesearch.imagesearch import *
 import pywinauto
 import nobutool_utils as nbut
+from nobutool_class import *
 
 
 nobu_hWndDict ={}
@@ -21,6 +22,14 @@ def nobu_send_key(hwnd, key):
     win32api.PostMessage(hwnd, win32con.WM_KEYDOWN, key)
     win32api.PostMessage(hwnd, win32con.WM_KEYUP, key)
 '''
+def get_curHwnd(name):
+    curHwnd = 0
+    for key in nobu_hWndDict:
+       if key.find("NO:1") != -1 or key.find(name) != -1:
+          print("Found "+key)
+          curHwnd = nobu_hWndDict.get(key)
+          break
+    return curHwnd
 
 def find_window_list(targetclass): 
   hWndList = []
@@ -45,7 +54,6 @@ def nobu_click_pos(pos, action, offset):
 def nobu_manufacture_click(curHwnd, curApp):
    isStop = False
    img = "./img/材料不夠.png"
-   #img = "./img/not_enough.png"
    rect = win32gui.GetWindowRect(curHwnd)
    
    while not isStop :
@@ -62,20 +70,20 @@ def nobu_template_func(curHwnd, curApp):
    isStop = False
    keyEnter = "ENTER"
 
-   #img = "./img/材料不夠.png"
-   #img = "./img/not_enough.png"
    rect = win32gui.GetWindowRect(curHwnd)
    curMode = 0
+
+   cb_state = CombatState()
    
    while True:
     match curMode:
         case 0:
-          if nbut.nobu_is_in_combat(rect):
+          if cb_state.checkInCombatState():
             print("Combat IN!!")
             curMode = 1
           
         case 1:
-          if nbut.nobu_is_out_combat(rect):
+          if cb_state.checkOutCombatState():
             print("Combat OUT!!")
             curMode = 2
           
@@ -92,17 +100,24 @@ if __name__ == '__main__':
         cmd = int(argv[1])
         print("cmd: %d" % cmd)
 
-    find_window_list(nbut.NOBUON_CLASS_NAME)
+    #find_window_list(nbut.NOBUON_CLASS_NAME)
+    #curHwnd = get_curHwnd(nbut.NOBUON_TITLE_NAME)
+
+    find_window_list(nbut.NOTEPAD_PLUS_CLASS_NAME)
+    curHwnd = get_curHwnd(nbut.NOTEPAD_PLUS_TITLE_NAME)
+    '''
     for key in nobu_hWndDict:
        if key.find("NO:1") != -1 or key.find("Nobunaga Online HD Tc") != -1:
           print("Found "+key)
           curHwnd = nobu_hWndDict.get(key)
           break
-    
+    '''
     #hwnd = win32gui.FindWindow(nbut.NOBUON_CLASS_NAME, None)
     print("hwnd: %x" %(curHwnd))
-    proc_id = pywinauto.application.process_from_module("nobolHD.bng")
+    #proc_id = pywinauto.application.process_from_module("nobolHD.bng")
     curApp = pywinauto.Application().connect(handle = curHwnd)
+
+    nb_context = NobuOnContext(curHwnd, curApp)
     
     match cmd:
         case 0:
@@ -111,7 +126,3 @@ if __name__ == '__main__':
             nobu_template_func(curHwnd, curApp)
         case _:
             print("No cmd to run")
-
-
-    
-    

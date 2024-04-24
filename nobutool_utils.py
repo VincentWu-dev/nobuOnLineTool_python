@@ -11,11 +11,11 @@ import pywinauto
 
 NOBUON_CLASS_NAME = "Nobunaga Online Game MainFrame"
 NOTEPAD_PLUS_CLASS_NAME = "Notepad++"
-
-def cv_imread(file_path = ""):
-    file_path_gbk = file_path.encode('utf-8')        # unicode转gbk，字符串变为字节数组
-    img_mat = cv2.imread(file_path_gbk.decode())  # 字节数组直接转字符串，不解码
-    return img_mat
+NOBUON_TITLE_NAME = "Nobunaga Online HD Tc"
+NOTEPAD_PLUS_TITLE_NAME = "*新文件 4 - Notepad++"
+NOBUON_IDLE_STATE = 0
+NOBUON_INCOMBAT_STATE = 1
+NOBUON_WAIT_COMBAT_END_STATE = 2
 
 def nobu_imagesearch(winrect, image, precision=0.8):
     time1 = time.time()
@@ -68,3 +68,7 @@ def nobu_is_in_combat(rect):
         return True
     else:
         return False
+
+#TO DO: Load all image in ./img/
+def nobu_load_img():
+    print("-->nobu_load_img")
