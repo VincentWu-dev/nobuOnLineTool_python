@@ -10,7 +10,7 @@ from python_imagesearch.imagesearch import *
 import pywinauto
 import nobutool_utils as nbut
 from nobutool_class import *
-from nobutool_func import * as nbf
+import nobutool_func as nbf
 
 
 nobu_hWndDict ={}
@@ -64,7 +64,7 @@ def nobu_manufacture_click(context):
         #nobu_click_pos(pos, "left", 5)
         isStop = True
     else:
-        nbut.nobu_send_key(context.get_curHwnd(),context.getApp(), "ENTER")
+        nbut.nobu_send_key(context.getHwnd(),context.getApp(), "ENTER")
     time.sleep(0.1)
 
 def nobu_template_func(nb_context):
