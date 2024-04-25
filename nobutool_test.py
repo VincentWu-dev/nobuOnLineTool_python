@@ -10,8 +10,7 @@ from python_imagesearch.imagesearch import *
 import pywinauto
 import nobutool_utils as nbut
 from nobutool_class import *
-from nobutool_func import * as nbf
-
+import tkinter as tk
 
 nobu_hWndDict ={}
 
@@ -107,8 +106,8 @@ if __name__ == '__main__':
         cmd = int(argv[1])
         print("cmd: %d" % cmd)
 
-    find_window_list(nbut.NOBUON_CLASS_NAME)
-    curHwnd = get_curHwnd(nbut.NOBUON_TITLE_NAME)
+    find_window_list("Notepad++")
+    curHwnd = get_curHwnd("*新文件 4 - Notepad++")
 
     #find_window_list(nbut.NOTEPAD_PLUS_CLASS_NAME)
     #curHwnd = get_curHwnd(nbut.NOTEPAD_PLUS_TITLE_NAME)
@@ -116,15 +115,19 @@ if __name__ == '__main__':
     print("hwnd: %x" %(curHwnd))
     #proc_id = pywinauto.application.process_from_module("nobolHD.bng")
     curApp = pywinauto.Application().connect(handle = curHwnd)
-
-    nb_context = NobuOnContext(curHwnd, curApp)
     
+    root = tk.Tk()
+    root.title('nobutool')        # 設定標題
+    #root.iconbitmap('favicon.ico')  # 設定 icon ( 格式限定 .ico )
+
+    # 如果是 Mac 使用下面這行，可以使用 gif 或 png
+    # root.tk.call('wm', 'iconphoto', root._w, tk.PhotoImage(file='icon.gif'))
+    root.mainloop()
+
     match cmd:
         case 0:
             nobu_manufacture_click(nb_context)
-        case 1: #冥宮
-            nbf.nobu_dg_dream1_func(nb_context)
-        case 2:
+        case 1:
             nobu_template_func(nb_context)
         case _:
             print("No cmd to run")

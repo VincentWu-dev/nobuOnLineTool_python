@@ -19,7 +19,12 @@ class NobuOnContext:
     
     def getRect(self):
         return self.rect
+    
+    def getHwnd(self):
+        return self.hwnd
 
+    def getApp(self):
+        return self.app
 
 class CombatState:
     def __init__(self,nb_context, state=nbut.NOBUON_IDLE_STATE):
@@ -44,6 +49,13 @@ class CombatState:
                     if not nbut.nobu_is_out_combat(rect):
                         return False
                 
+                return True
+            time.sleep(0.2)
+    
+    def checkMoveToNextFloor(self):
+        rect = self.context.getRect()
+        while True:
+            if nobu_imagesearch(rect, "進入下一層圖片"):               
                 return True
             time.sleep(0.2)
 

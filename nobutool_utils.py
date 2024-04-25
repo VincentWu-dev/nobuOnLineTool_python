@@ -13,9 +13,11 @@ NOBUON_CLASS_NAME = "Nobunaga Online Game MainFrame"
 NOTEPAD_PLUS_CLASS_NAME = "Notepad++"
 NOBUON_TITLE_NAME = "Nobunaga Online HD Tc"
 NOTEPAD_PLUS_TITLE_NAME = "*新文件 4 - Notepad++"
+
 NOBUON_IDLE_STATE = 0
 NOBUON_INCOMBAT_STATE = 1
-NOBUON_WAIT_COMBAT_END_STATE = 2
+NOBUON_ENDCOMBAT_STATE = 2
+NOBUON_MOVE_STATE = 3
 
 def nobu_imagesearch(winrect, image, precision=0.8):
     time1 = time.time()
