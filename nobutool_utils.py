@@ -10,15 +10,18 @@ from python_imagesearch.imagesearch import *
 import pywinauto
 
 NOBUON_CLASS_NAME = "Nobunaga Online Game MainFrame"
-NOTEPAD_PLUS_CLASS_NAME = "Notepad++"
 NOBUON_TITLE_NAME = "Nobunaga Online HD Tc"
 NOTEPAD_PLUS_TITLE_NAME = "*新文件 4 - Notepad++"
-
+NOTEPAD_PLUS_CLASS_NAME = "Notepad++"
+'''
 NOBUON_IDLE_STATE = 0
 NOBUON_INCOMBAT_STATE = 1
 NOBUON_ENDCOMBAT_STATE = 2
 NOBUON_MOVE_STATE = 3
-
+NOBUON_EXIT_DUNG_STATE = 4
+NOBUON_CHOOSE_FLOOR_STATE = 5
+NOBUON_FIND_ENTERANCE_STATE = 6
+'''
 def nobu_imagesearch(winrect, image, precision=0.8):
     time1 = time.time()
     im = pyautogui.screenshot(region=(winrect[0],winrect[1],1024,768))
@@ -31,7 +34,7 @@ def nobu_imagesearch(winrect, image, precision=0.8):
 
     res = cv2.matchTemplate(img_gray, template, cv2.TM_CCOEFF_NORMED)
     min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
-    print("time consume: "+str(time.time() - time1))
+    print("nobu_imagesearch time consume: "+str(time.time() - time1))
     if max_val < precision:
         return [-1,-1]
     imgLoc = list(max_loc)
@@ -53,7 +56,7 @@ def nobu_send_key(hwnd, app, key: str, holdTime=0.1):
     except:
         print("send_keystrokes error catch!!")
     #testapp.window(title="Nobunaga Online HD Tc 10.34").send_chars('{w up}')
-    print("time consume: "+str(time.time() - time1))
+    #print("time consume: "+str(time.time() - time1))
 
 def nobu_is_in_combat(rect):
     print("-->nobu_is_in_combat")

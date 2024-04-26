@@ -9,22 +9,39 @@ import sys
 from python_imagesearch.imagesearch import *
 import pywinauto
 import nobutool_utils as nbut
+from enum import Enum, auto
+
+class NobuOnState(Enum):
+    NOBUON_MOVE_ENTER_STATE = auto()
+    NOBUON_INCOMBAT_STATE = auto()
+    NOBUON_ENDCOMBAT_STATE = auto()
+    NOBUON_NEXTFLOOR_STATE = auto()
+    NOBUON_MOVE_STATE = auto()
+    NOBUON_EXIT_DUNG_STATE = auto()
+    NOBUON_CHOOSE_FLOOR_STATE = auto()
+    NOBUON_FIND_ENTERANCE_STATE = auto()
 
 class NobuOnContext:
-    def __init__(self, hwnd, app):
+    def __init__(self, hwnd, app, run=True):
         self.hwnd = hwnd
         self.app = app
         self.rect = win32gui.GetWindowRect(hwnd)
         self.img_dict = nbut.nobu_load_img()
-    
+
     def getRect(self):
         return self.rect
-    
+
     def getHwnd(self):
         return self.hwnd
 
     def getApp(self):
         return self.app
+
+    def setRun(self, run):
+        self.run = run
+
+    def getRun(self):
+        return self.run
 
 class CombatState:
     def __init__(self,nb_context, state=nbut.NOBUON_IDLE_STATE):
@@ -36,7 +53,6 @@ class CombatState:
         time.sleep(0.1)
         return nbut.nobu_is_in_combat(rect)
 
-    
     def checkEndCombatState(self):
         rect = self.context.getRect()
         if nbut.nobu_is_out_combat(rect):
@@ -49,7 +65,7 @@ class CombatState:
             return True
         else:
             return False
-    
+
     def checkMoveToNextFloor(self):
         rect = self.context.getRect()
         time.sleep(0.2)
@@ -59,14 +75,13 @@ class CombatState:
         else:
             return False
 
-    
     def loopCheckInCombatState(self):
         rect = self.context.getRect()
         while True:
             if nbut.nobu_is_in_combat(rect):               
                 return True
             time.sleep(0.1)
-    
+
     def loopCheckEndCombatState(self):
         rect = self.context.getRect()
         while True:
@@ -79,7 +94,7 @@ class CombatState:
                 
                 return True
             time.sleep(0.2)
-    
+
     def loopCheckMoveToNextFloor(self):
         rect = self.context.getRect()
         while True:
