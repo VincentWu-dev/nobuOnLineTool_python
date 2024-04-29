@@ -12,7 +12,7 @@ import nobutool_utils as nbut
 from nobutool_class import *
 
 dg_dream1_mode=(NobuOnState.NOBUON_MOVE_ENTER_STATE, NobuOnState.NOBUON_INCOMBAT_STATE, NobuOnState.NOBUON_ENDCOMBAT_STATE, NobuOnState.NOBUON_NEXTFLOOR_STATE)
-dg_dream1_floor_mode=(NOBUON_FIND_ENTERANCE_STATE, NobuOnState.NOBUON_MOVE_STATE,NOBUON_CHOOSE_FLOOR_STATE, NobuOnState.NOBUON_INCOMBAT_STATE,
+dg_dream1_floor_mode=(NobuOnState.NOBUON_FIND_ENTERANCE_STATE, NobuOnState.NOBUON_MOVE_STATE,NobuOnState.NOBUON_CHOOSE_FLOOR_STATE, NobuOnState.NOBUON_INCOMBAT_STATE,
                          NobuOnState.NOBUON_ENDCOMBAT_STATE, NobuOnState.NOBUON_EXIT_DUNG_STATE)
 #冥宮
 '''
@@ -23,51 +23,76 @@ dg_dream1_floor_mode=(NOBUON_FIND_ENTERANCE_STATE, NobuOnState.NOBUON_MOVE_STATE
 '''
 def nobu_dg_dream1_func(nb_context, floor=0):
    #rect = win32gui.GetWindowRect(curHwnd)
-   nb_context.setStop(True)
+   nb_context.setRun(True)
 
    cb_state = CombatState(nb_context)
    curHwnd = nb_context.getHwnd()
    curApp = nb_context.getApp()
    dg_mode = dg_dream1_mode
-   if floor > 0:
-    dg_mode = dg_dream1_floor_mode
-
-    mode_idx = 0
-    curMode = dg_mode[mode_idx]
+   if floor > 0: dg_mode = dg_dream1_floor_mode
+   
+   mode_idx = 0
+   curMode = dg_mode[mode_idx]
 
    while nb_context.getRun():
     match curMode:
         case NobuOnState.NOBUON_FIND_ENTERANCE_STATE:
             print("NOBUON_FIND_ENTERANCE_STATE")
-            curMode = dg_mode[mode_idx+=1]
+            mode_idx+=1
+            curMode = dg_mode[mode_idx]
 
         case NobuOnState.NOBUON_MOVE_ENTER_STATE:
-            nbut.nobu_send_key(curHwnd,curApp,"w",0.3)
+            nbut.nobu_send_key(curHwnd,curApp,"w",0.5)
             nbut.nobu_send_key(curHwnd,curApp,"ENTER")
             if cb_state.checkInCombatState():
               print("Combat IN!!")
-              curMode = dg_mode[mode_idx+=1]
+              mode_idx+=1
+              curMode = dg_mode[mode_idx]
 
         case NobuOnState.NOBUON_INCOMBAT_STATE:
           if cb_state.checkEndCombatState():
             print("Combat END!!")
-            curMode = NobuOnState.NOBUON_ENDCOMBAT_STATE
+            mode_idx+=1
+            curMode = dg_mode[mode_idx]
         case NobuOnState.NOBUON_ENDCOMBAT_STATE:
             if cb_state.checkInCombatState():
                 nbut.nobu_send_key(curHwnd,curApp,"ENTER")
             else:
-                curMode = dg_mode[mode_idx+=1]
+                mode_idx+=1
+                curMode = dg_mode[mode_idx]
         case NobuOnState.NOBUON_NEXTFLOOR_STATE:
             print("NOBUON_NEXTFLOOR_STATE")
-            nbut.nobu_send_key(curHwnd,curApp,"w", 0.3)
+            nbut.nobu_send_key(curHwnd,curApp,"w", 0.5)
             nbut.nobu_send_key(curHwnd,curApp,"ENTER")
             if cb_state.checkMoveToNextFloor():
                 time.sleep(1)
                 nbut.nobu_send_key(curHwnd,curApp,"j")
                 #time.sleep(1)
                 nbut.nobu_send_key(curHwnd,curApp,"ENTER")
-                curMode = dg_mode[mode_idx+=1]
+                mode_idx=0
+                curMode = dg_mode[mode_idx]
                 #選擇確定->enter
         case _:
           break
-    time.sleep(0.2)
+    time.sleep(0.3)
+
+'''
+while nb_context.getRun():
+        nbut.nobu_send_key(nb_context.getHwnd(), nb_context.getApp(),"d", 0.1)
+        time.sleep(0.3)
+        pos = nbut.nobu_imagesearch(nb_context.getRect(), "./img/北.png")
+        #pos1 = nbut.nobu_imagesearch(nb_context.getRect(), "./img/北1.png")
+        pos2 = nbut.nobu_imagesearch(nb_context.getRect(), "./img/光球南.png")
+        if (pos[0] !=-1): print("Found 北")
+        if (pos2[0] !=-1):
+            print("Found 南")
+            while True:
+                nbut.nobu_send_key(nb_context.getHwnd(), nb_context.getApp(),"w", 0.3)
+                nbut.nobu_send_key(nb_context.getHwnd(), nb_context.getApp(),"ENTER")
+                time.sleep(0.2)
+                pos = nbut.nobu_imagesearch(nb_context.getRect(), "./img/冥宮退場.png")
+                if pos[0] !=-1:
+                    print("找到冥宮退場.png")
+                    nb_context.setRun(False)
+                    break
+'''

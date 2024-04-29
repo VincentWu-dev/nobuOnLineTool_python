@@ -48,9 +48,7 @@ def get_window_rect(handle):
     height = bottom - top
     return width, height   
 
-def nobu_click_pos(pos, action, offset):
-    pyautogui.moveTo(pos[0]+offset, pos[1]+offset, duration=0.1)
-    pyautogui.click(button=action)
+
 
 def nobu_manufacture_click(context):
    isStop = False

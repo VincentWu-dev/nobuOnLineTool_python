@@ -27,6 +27,7 @@ class NobuOnContext:
         self.app = app
         self.rect = win32gui.GetWindowRect(hwnd)
         self.img_dict = nbut.nobu_load_img()
+        self.maxFloor = 0
 
     def getRect(self):
         return self.rect
@@ -42,11 +43,17 @@ class NobuOnContext:
 
     def getRun(self):
         return self.run
+    
+    def getMaxFloor(self):
+        return self.maxFloor
+    
+    def setMaxFloor(self, maxFloor):
+        self.maxFloor = maxFloor
 
 class CombatState:
-    def __init__(self,nb_context, state=nbut.NOBUON_IDLE_STATE):
+    def __init__(self,nb_context, state=NobuOnState.NOBUON_MOVE_ENTER_STATE):
         self.curState = state
-        self.nextState = nbut.NOBUON_IDLE_STATE
+        self.nextState = NobuOnState.NOBUON_MOVE_ENTER_STATE
         self.context = nb_context
     def checkInCombatState(self):
         rect = self.context.getRect()
