@@ -15,6 +15,8 @@ import threading
 from PIL import Image
 import pytesseract
 from math import ceil
+from PyQt5.QtWidgets import QApplication
+import sys
   
 nobu_hWndDict ={}
 
@@ -333,8 +335,35 @@ def nobu_template_func(nb_context):
                     break
             
    '''
+ccnt = 0
+def nobu_test1_func(nb_context):
+   isStop = False
    
-      
+   curMode = 0
+
+   cb_state = CombatState(nb_context)
+   img = pyautogui.screenshot(region=(0,0,1024,768))
+   img = cv2.cvtColor(np.asarray(img), cv2.COLOR_RGB2BGR) # cvtColor用于在图像中不同的色彩空间进行转换,用于后续处理。
+   cv2.imwrite('screenshot_pyautogui.jpg', img)
+   
+   global ccnt
+   app = QApplication(sys.argv)
+   screen = app.primaryScreen()
+   
+   while True:
+    #time1 = time.time()
+    img = screen.grabWindow(nb_context.getHwnd())
+    img.save("screenshot_pyqt5_"+str(ccnt)+".png","png")
+    ccnt+=1
+    time.sleep(0.2)
+
+   #img_rgb = cv2.imread("screenshot_pyqt5.png")
+   #img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
+   #cv2.imwrite('screenshot_gray.png', img_gray)
+   #print(time.time()-time1)
+   #img.save("screenshot_pyqt5.jpg")
+
+   
 if __name__ == '__main__':
     argv = sys.argv
     cmd = -1
@@ -370,5 +399,7 @@ if __name__ == '__main__':
             nobu_template_func(nb_context)
         case 2:
             nobu_test_func(nb_context)
+        case 3:
+            nobu_test1_func(nb_context)
         case _:
             print("No cmd to run")

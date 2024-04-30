@@ -26,6 +26,7 @@ NOBUON_EXIT_DUNG_STATE = 4
 NOBUON_CHOOSE_FLOOR_STATE = 5
 NOBUON_FIND_ENTERANCE_STATE = 6
 '''
+cnt = 0
 def nobu_click_pos(pos, action, offset, clicks=1, interval=1):
     pyautogui.moveTo(pos[0]+offset, pos[1]+offset, duration=0.1)
     pyautogui.click(button=action, clicks=clicks, interval=interval)
@@ -33,8 +34,13 @@ def nobu_click_pos(pos, action, offset, clicks=1, interval=1):
 def nobu_imagesearch(winrect, image, precision=0.8):
     time1 = time.time()
     im = pyautogui.screenshot(region=(winrect[0],winrect[1],1024,768))
+    
     img_rgb = np.array(im)
     img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
+    global cnt
+    cnt +=1
+    cv2.imwrite('screenshot_gray'+str(cnt)+'.jpg', img_gray)
+    
     template= cv2.imdecode(np.fromfile(image, dtype=np.uint8), 0)
     #template = cv2.imread(image, 0)
     #template = cv_imread(image)
@@ -48,7 +54,9 @@ def nobu_imagesearch(winrect, image, precision=0.8):
     imgLoc = list(max_loc)
     imgLoc[0] += winrect[0]
     imgLoc[1] += winrect[1]
-
+    
+    print("===========")
+    print(imgLoc)
     return imgLoc #返回圖片座標
 
 def nobu_send_combokey(hwnd, key:str, combo_key:str, holdTime=5):

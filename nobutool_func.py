@@ -50,6 +50,7 @@ def nobu_dg_dream1_func(nb_context, floor=0):
               curMode = dg_mode[mode_idx]
 
         case NobuOnState.NOBUON_INCOMBAT_STATE:
+          print("NOBUON_INCOMBAT_STATE")
           if cb_state.checkEndCombatState():
             print("Combat END!!")
             mode_idx+=1
