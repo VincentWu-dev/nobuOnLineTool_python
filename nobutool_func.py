@@ -33,6 +33,7 @@ def nobu_dg_dream1_func(nb_context, floor=0):
    
    mode_idx = 0
    curMode = dg_mode[mode_idx]
+   timeWD = time.time()
 
    while nb_context.getRun():
     match curMode:
@@ -44,8 +45,15 @@ def nobu_dg_dream1_func(nb_context, floor=0):
         case NobuOnState.NOBUON_MOVE_ENTER_STATE:
             nbut.nobu_send_key(curHwnd,curApp,"w",0.5)
             nbut.nobu_send_key(curHwnd,curApp,"ENTER")
+            if time.time()-timeWD > 5*60:
+               print("可能掛點，開始檢查隊友人數與狀態回復")
+               nbut.nobu_statusCheck_reset(nb_context, 0)
+               mode_idx = 0
+               curMode = dg_mode[mode_idx]
+
             if cb_state.checkInCombatState():
               print("Combat IN!!")
+              timeWD = time.time()
               mode_idx+=1
               curMode = dg_mode[mode_idx]
 

@@ -153,3 +153,13 @@ def nobu_digi_ocr_func(imgPath):
    #img = Image.open('./img/floor_shot.png')
    text = pytesseract.image_to_string(binary, lang='eng', config='--psm 6 --oem 3 -c tessedit_char_whitelist=0123456789')
    return text
+
+def nobu_statusCheck_reset(nb_context, heroTeamSet=0):
+    #TODO呼叫英傑組合確認人數
+
+    pos = nobu_imagesearch(nb_context.getRect(), "./img/隊友人數.png", 0.95)
+    if pos[0]!=-1:
+        print("重新呼叫英傑組合")
+
+    #TODO轉向正北前進
+    nbut.nobu_loop_turn(nb_context,"a", "北")
