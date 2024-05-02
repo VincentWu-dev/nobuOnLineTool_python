@@ -47,9 +47,9 @@ def nobu_dg_dream1_func(nb_context, floor=0):
             nbut.nobu_send_key(curHwnd,curApp,"ENTER")
             if time.time()-timeWD > 5*60:
                print("可能掛點，開始檢查隊友人數與狀態回復")
-               nbut.nobu_statusCheck_reset(nb_context, 0)
-               mode_idx = 0
-               curMode = dg_mode[mode_idx]
+               #nbut.nobu_statusCheck_reset(nb_context, 0)
+               #mode_idx = 0
+               #curMode = dg_mode[mode_idx]
 
             if cb_state.checkInCombatState():
               print("Combat IN!!")
@@ -71,7 +71,7 @@ def nobu_dg_dream1_func(nb_context, floor=0):
                 curMode = dg_mode[mode_idx]
         case NobuOnState.NOBUON_NEXTFLOOR_STATE:
             print("NOBUON_NEXTFLOOR_STATE")
-            nbut.nobu_send_key(curHwnd,curApp,"w", 0.5)
+            nbut.nobu_send_key(curHwnd,curApp,"w", 0.3)
             nbut.nobu_send_key(curHwnd,curApp,"ENTER")
             if cb_state.checkMoveToNextFloor():
                 time.sleep(1)
@@ -83,7 +83,7 @@ def nobu_dg_dream1_func(nb_context, floor=0):
                 #選擇確定->enter
         case _:
           break
-    time.sleep(0.3)
+    time.sleep(0.4)
 
 '''
 while nb_context.getRun():

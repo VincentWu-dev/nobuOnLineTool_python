@@ -335,27 +335,31 @@ def nobu_template_func(nb_context):
                     break
             
    '''
-ccnt = 0
 def nobu_test1_func(nb_context):
    isStop = False
    
    curMode = 0
 
    cb_state = CombatState(nb_context)
-   img = pyautogui.screenshot(region=(0,0,1024,768))
-   img = cv2.cvtColor(np.asarray(img), cv2.COLOR_RGB2BGR) # cvtColor用于在图像中不同的色彩空间进行转换,用于后续处理。
-   cv2.imwrite('screenshot_pyautogui.jpg', img)
+   nb_context.setRun(True)
+
+   while nb_context.getRun():
+      pos = nbut.nobu_imagesearch(nb_context.getRect(),"./img/隊伍6人.png", 0.8)
+      if pos[0]!=-1:
+         print("找到 隊伍6人1.png")
+         time.sleep(0.5)
+         #nb_context.setRun(False)
+
+   #global ccnt
+   #app = QApplication(sys.argv)
+   #screen = app.primaryScreen()
    
-   global ccnt
-   app = QApplication(sys.argv)
-   screen = app.primaryScreen()
-   
-   while True:
+   #while True:
     #time1 = time.time()
-    img = screen.grabWindow(nb_context.getHwnd())
-    img.save("screenshot_pyqt5_"+str(ccnt)+".png","png")
-    ccnt+=1
-    time.sleep(0.2)
+    #img = screen.grabWindow(nb_context.getHwnd())
+    #img.save("screenshot_pyqt5_"+str(ccnt)+".png","png")
+    #ccnt+=1
+    #time.sleep(0.2)
 
    #img_rgb = cv2.imread("screenshot_pyqt5.png")
    #img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
