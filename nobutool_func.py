@@ -14,6 +14,7 @@ from nobutool_class import *
 dg_dream1_mode=(NobuOnState.NOBUON_MOVE_ENTER_STATE, NobuOnState.NOBUON_INCOMBAT_STATE, NobuOnState.NOBUON_ENDCOMBAT_STATE, NobuOnState.NOBUON_NEXTFLOOR_STATE)
 dg_dream1_floor_mode=(NobuOnState.NOBUON_FIND_ENTERANCE_STATE, NobuOnState.NOBUON_MOVE_STATE,NobuOnState.NOBUON_CHOOSE_FLOOR_STATE, NobuOnState.NOBUON_INCOMBAT_STATE,
                          NobuOnState.NOBUON_ENDCOMBAT_STATE, NobuOnState.NOBUON_EXIT_DUNG_STATE)
+dg_auto_combat_mode=(NobuOnState.NOBUON_MOVE_STATE, NobuOnState.NOBUON_INCOMBAT_STATE,NobuOnState.NOBUON_ENDCOMBAT_STATE)
 #冥宮
 '''
 1. #w->enter->check in combat
@@ -58,7 +59,7 @@ def nobu_dg_dream1_func(nb_context, floor=0):
               curMode = dg_mode[mode_idx]
 
         case NobuOnState.NOBUON_INCOMBAT_STATE:
-          print("NOBUON_INCOMBAT_STATE")
+          #print("NOBUON_INCOMBAT_STATE")
           if cb_state.checkEndCombatState():
             print("Combat END!!")
             mode_idx+=1
@@ -70,8 +71,8 @@ def nobu_dg_dream1_func(nb_context, floor=0):
                 mode_idx+=1
                 curMode = dg_mode[mode_idx]
         case NobuOnState.NOBUON_NEXTFLOOR_STATE:
-            print("NOBUON_NEXTFLOOR_STATE")
-            nbut.nobu_send_key(curHwnd,curApp,"w", 0.3)
+            #print("NOBUON_NEXTFLOOR_STATE")
+            nbut.nobu_send_key(curHwnd,curApp,"w", 0.2)
             nbut.nobu_send_key(curHwnd,curApp,"ENTER")
             if cb_state.checkMoveToNextFloor():
                 time.sleep(1)
@@ -80,10 +81,53 @@ def nobu_dg_dream1_func(nb_context, floor=0):
                 nbut.nobu_send_key(curHwnd,curApp,"ENTER")
                 mode_idx=0
                 curMode = dg_mode[mode_idx]
+                time.sleep(3) #進入下一層delay 3秒
                 #選擇確定->enter
         case _:
           break
     time.sleep(0.4)
+
+def nobu_auto_combat_func(nb_context, combat_action=()):
+   #rect = win32gui.GetWindowRect(curHwnd)
+   nb_context.setRun(True)
+
+   cb_state = CombatState(nb_context)
+   curHwnd = nb_context.getHwnd()
+   curApp = nb_context.getApp()
+   dg_mode=dg_auto_combat_mode
+   
+   
+   mode_idx = 0
+   curMode = dg_mode[mode_idx]
+   timeWD = time.time()
+
+   while nb_context.getRun():
+      match curMode:
+         case NobuOnState.NOBUON_MOVE_STATE:
+            if cb_state.checkInCombatState():
+              print("Combat IN!!")
+              time.sleep(3)
+              for i in combat_action:
+                 print("Key: "+i)
+                 nbut.nobu_send_key(curHwnd,curApp, i)
+                 time.sleep(0.2)
+              mode_idx+=1
+              curMode = dg_mode[mode_idx]
+
+         case NobuOnState.NOBUON_INCOMBAT_STATE:
+            if cb_state.checkEndCombatState_test():
+                print("Combat END!!")
+                mode_idx+=1
+                curMode = dg_mode[mode_idx]
+         case NobuOnState.NOBUON_ENDCOMBAT_STATE:
+            if cb_state.checkInCombatState():
+                nbut.nobu_send_key(curHwnd,curApp,"ENTER")
+            else:
+                mode_idx=0
+                curMode = dg_mode[mode_idx]
+         case _:
+            break
+      time.sleep(0.4)
 
 '''
 while nb_context.getRun():

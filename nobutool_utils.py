@@ -97,7 +97,7 @@ def nobu_send_key(hwnd, app, key: str,holdTime=0.1, combo_key=""):
     #print("time consume: "+str(time.time() - time1))
 
 def nobu_is_in_combat(rect):
-    print("-->nobu_is_in_combat")
+    #print("-->nobu_is_in_combat")
     pos = nobu_imagesearch(rect, "./img/戰鬥中.png", 0.8)
     if pos[0] != -1:
         return True
@@ -108,6 +108,14 @@ def nobu_is_out_combat(rect):
     pos = nobu_imagesearch(rect, "./img/戰鬥_技能.png", 0.8)
     pos1 = nobu_imagesearch(rect, "./img/戰鬥_防禦.png", 0.8)
     if pos[0] == -1 and pos1[0] == -1:
+        return True
+    else:
+        return False
+
+def nobu_is_out_combat_test(rect):
+    pos = nobu_imagesearch(rect, "./img/戰鬥結束_剩下.png", 0.8)
+    #pos1 = nobu_imagesearch(rect, "./img/戰鬥_防禦.png", 0.8)
+    if pos[0] != -1:
         return True
     else:
         return False

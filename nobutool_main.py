@@ -14,7 +14,8 @@ import nobutool_func as nbf
 
 
 nobu_hWndDict ={}
-
+#使用物品->第一個物品
+nobu_combat_action_useItem=("k","k","k","k","ENTER","ENTER")
 
 
 #win32con.VK_RETURN
@@ -122,7 +123,9 @@ if __name__ == '__main__':
             nobu_manufacture_click(nb_context)
         case 1: #冥宮
             nbf.nobu_dg_dream1_func(nb_context)
-        case 2:
+        case 2: #戰鬥開始自動出招與結束出戰鬥
+            nbf.nobu_auto_combat_func(nb_context, nobu_combat_action_useItem)
+        case 3:
             nobu_template_func(nb_context)
         case _:
             print("No cmd to run")
