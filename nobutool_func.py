@@ -46,8 +46,10 @@ def nobu_dg_dream1_func(nb_context, floor=0):
         case NobuOnState.NOBUON_MOVE_ENTER_STATE:
             nbut.nobu_send_key(curHwnd,curApp,"w",0.5)
             nbut.nobu_send_key(curHwnd,curApp,"ENTER")
+            print("NOBUON_MOVE_ENTER_STATE: time: "+str(time.time()))
             if time.time()-timeWD > 5*60:
                print("可能掛點，開始檢查隊友人數與狀態回復")
+               nb_context.setRun(False)
                #nbut.nobu_statusCheck_reset(nb_context, 0)
                #mode_idx = 0
                #curMode = dg_mode[mode_idx]

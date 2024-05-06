@@ -76,7 +76,7 @@ class CombatState:
         rect = self.context.getRect()
         if nbut.nobu_is_out_combat_test(rect):
             t1 = time.time()
-            while (time.time() - t1) < 2: #keep checking in 0.5 sec
+            while (time.time() - t1) < 1: #keep checking in 0.5 sec
                 time.sleep(0.2)
                 if not nbut.nobu_is_out_combat_test(rect):
                     return False
