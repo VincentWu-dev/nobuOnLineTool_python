@@ -10,6 +10,7 @@ from python_imagesearch.imagesearch import *
 import pywinauto
 import nobutool_utils as nbut
 from nobutool_class import *
+import datetime
 
 dg_dream1_mode=(NobuOnState.NOBUON_MOVE_ENTER_STATE, NobuOnState.NOBUON_INCOMBAT_STATE, NobuOnState.NOBUON_ENDCOMBAT_STATE, NobuOnState.NOBUON_NEXTFLOOR_STATE)
 dg_dream1_floor_mode=(NobuOnState.NOBUON_FIND_ENTERANCE_STATE, NobuOnState.NOBUON_MOVE_STATE,NobuOnState.NOBUON_CHOOSE_FLOOR_STATE, NobuOnState.NOBUON_INCOMBAT_STATE,
@@ -42,14 +43,18 @@ def nobu_dg_dream1_func(nb_context, floor=0):
             print("NOBUON_FIND_ENTERANCE_STATE")
             mode_idx+=1
             curMode = dg_mode[mode_idx]
+            time.sleep(0.5)
 
         case NobuOnState.NOBUON_MOVE_ENTER_STATE:
-            nbut.nobu_send_key(curHwnd,curApp,"w",0.5)
             nbut.nobu_send_key(curHwnd,curApp,"ENTER")
-            print("NOBUON_MOVE_ENTER_STATE: time: "+str(time.time()))
+            nbut.nobu_send_key(curHwnd,curApp,"w",0.3)
+            #print("NOBUON_MOVE_ENTER_STATE: time: "+str(time.time()))
             if time.time()-timeWD > 5*60:
-               print("可能掛點，開始檢查隊友人數與狀態回復")
+               print("NOBUON_MOVE_ENTER_STATE: 可能掛點，開始檢查隊友人數與狀態回復")
                nb_context.setRun(False)
+               now = datetime.datetime.now()
+               dateTime = now.strftime("%Y-%m-%d, %H:%M:%S")
+               print(dateTime)
                #nbut.nobu_statusCheck_reset(nb_context, 0)
                #mode_idx = 0
                #curMode = dg_mode[mode_idx]
@@ -74,8 +79,17 @@ def nobu_dg_dream1_func(nb_context, floor=0):
                 curMode = dg_mode[mode_idx]
         case NobuOnState.NOBUON_NEXTFLOOR_STATE:
             #print("NOBUON_NEXTFLOOR_STATE")
+            time.sleep(0.5)      
             nbut.nobu_send_key(curHwnd,curApp,"w", 0.2)
             nbut.nobu_send_key(curHwnd,curApp,"ENTER")
+
+            if time.time()-timeWD > 5*60:
+               print("NOBUON_NEXTFLOOR_STATE: 可能掛點，開始檢查隊友人數與狀態回復")
+               now = datetime.datetime.now()
+               dateTime = now.strftime("%Y-%m-%d, %H:%M:%S")
+               print(dateTime)
+               nb_context.setRun(False)
+
             if cb_state.checkMoveToNextFloor():
                 time.sleep(1)
                 nbut.nobu_send_key(curHwnd,curApp,"j")

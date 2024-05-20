@@ -16,8 +16,8 @@ from PIL import Image
 import pytesseract
 from math import ceil
 from PyQt5.QtWidgets import QApplication
-import sys
-  
+import datetime
+
 nobu_hWndDict ={}
 
 
@@ -335,13 +335,15 @@ def nobu_template_func(nb_context):
                     break
             
    '''
+#ccnt = 0
+
 def nobu_test1_func(nb_context):
    isStop = False
    
    curMode = 0
 
    cb_state = CombatState(nb_context)
-   nb_context.setRun(True)
+   nb_context.setRun(False)
 
    while nb_context.getRun():
       pos = nbut.nobu_imagesearch(nb_context.getRect(),"./img/隊伍6人.png", 0.8)
@@ -350,16 +352,17 @@ def nobu_test1_func(nb_context):
          time.sleep(0.5)
          #nb_context.setRun(False)
 
-   #global ccnt
-   #app = QApplication(sys.argv)
-   #screen = app.primaryScreen()
+
+   ccnt = 0
+   app = QApplication(sys.argv)
+   screen = app.primaryScreen()
    
-   #while True:
-    #time1 = time.time()
-    #img = screen.grabWindow(nb_context.getHwnd())
-    #img.save("screenshot_pyqt5_"+str(ccnt)+".png","png")
-    #ccnt+=1
-    #time.sleep(0.2)
+   while True:
+    time1 = time.time()
+    img = screen.grabWindow(nb_context.getHwnd())
+    img.save("screenshot_pyqt5_"+str(ccnt)+".png","png")
+    ccnt+=1
+    time.sleep(0.2)
 
    #img_rgb = cv2.imread("screenshot_pyqt5.png")
    #img_gray = cv2.cvtColor(img_rgb, cv2.COLOR_BGR2GRAY)
@@ -383,7 +386,10 @@ if __name__ == '__main__':
     #find_window_list(nbut.NOTEPAD_PLUS_CLASS_NAME)
     #curHwnd = get_curHwnd(nbut.NOTEPAD_PLUS_TITLE_NAME)
     #hwnd = win32gui.FindWindow(nbut.NOBUON_CLASS_NAME, None)
+    now = datetime.datetime.now()
     print("hwnd: %x" %(curHwnd))
+    dateTime = now.strftime("%Y-%m-%d, %H:%M:%S")
+    print(dateTime)
     #proc_id = pywinauto.application.process_from_module("nobolHD.bng")
     curApp = pywinauto.Application().connect(handle = curHwnd)
     nb_context = NobuOnContext(curHwnd, curApp)

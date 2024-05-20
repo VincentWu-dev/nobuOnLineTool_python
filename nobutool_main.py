@@ -11,7 +11,7 @@ import pywinauto
 import nobutool_utils as nbut
 from nobutool_class import *
 import nobutool_func as nbf
-
+import datetime
 
 nobu_hWndDict ={}
 #使用物品->第一個物品
@@ -112,7 +112,10 @@ if __name__ == '__main__':
     #find_window_list(nbut.NOTEPAD_PLUS_CLASS_NAME)
     #curHwnd = get_curHwnd(nbut.NOTEPAD_PLUS_TITLE_NAME)
     #hwnd = win32gui.FindWindow(nbut.NOBUON_CLASS_NAME, None)
+    now = datetime.datetime.now()
     print("hwnd: %x" %(curHwnd))
+    dateTime = now.strftime("%Y-%m-%d, %H:%M:%S")
+    print(dateTime)
     #proc_id = pywinauto.application.process_from_module("nobolHD.bng")
     curApp = pywinauto.Application().connect(handle = curHwnd)
 
