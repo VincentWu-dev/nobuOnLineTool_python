@@ -12,7 +12,7 @@ import nobutool_utils as nbut
 from nobutool_class import *
 import datetime
 
-dg_dream1_mode=(NobuOnState.NOBUON_MOVE_ENTER_STATE, NobuOnState.NOBUON_INCOMBAT_STATE, NobuOnState.NOBUON_ENDCOMBAT_STATE, NobuOnState.NOBUON_NEXTFLOOR_STATE)
+dg_dream1_mode=(NobuOnState.NOBUON_MOVE_ENTER_STATE, NobuOnState.NOBUON_INCOMBAT_STATE, NobuOnState.NOBUON_ENDCOMBAT_STATE, NobuOnState.NOBUON_NEXTFLOOR_STATE, NobuOnState.NOBUON_CHECK_MEMBER_STATE)
 dg_dream1_floor_mode=(NobuOnState.NOBUON_FIND_ENTERANCE_STATE, NobuOnState.NOBUON_MOVE_STATE,NobuOnState.NOBUON_CHOOSE_FLOOR_STATE, NobuOnState.NOBUON_INCOMBAT_STATE,
                          NobuOnState.NOBUON_ENDCOMBAT_STATE, NobuOnState.NOBUON_EXIT_DUNG_STATE)
 dg_auto_combat_mode=(NobuOnState.NOBUON_MOVE_STATE, NobuOnState.NOBUON_INCOMBAT_STATE,NobuOnState.NOBUON_ENDCOMBAT_STATE)
@@ -51,7 +51,8 @@ def nobu_dg_dream1_func(nb_context, floor=0):
             #print("NOBUON_MOVE_ENTER_STATE: time: "+str(time.time()))
             if time.time()-timeWD > 5*60:
                print("NOBUON_MOVE_ENTER_STATE: 可能掛點，開始檢查隊友人數與狀態回復")
-               nb_context.setRun(False)
+               #nb_context.setRun(False)
+               curMode = NobuOnState.NOBUON_CHECK_MEMBER_STATE
                now = datetime.datetime.now()
                dateTime = now.strftime("%Y-%m-%d, %H:%M:%S")
                print(dateTime)
@@ -88,7 +89,7 @@ def nobu_dg_dream1_func(nb_context, floor=0):
                now = datetime.datetime.now()
                dateTime = now.strftime("%Y-%m-%d, %H:%M:%S")
                print(dateTime)
-               nb_context.setRun(False)
+               curMode = NobuOnState.NOBUON_CHECK_MEMBER_STATE
 
             if cb_state.checkMoveToNextFloor():
                 time.sleep(1)
@@ -99,6 +100,9 @@ def nobu_dg_dream1_func(nb_context, floor=0):
                 curMode = dg_mode[mode_idx]
                 time.sleep(3) #進入下一層delay 3秒
                 #選擇確定->enter
+        case NobuOnState.NOBUON_CHECK_MEMBER_STATE:
+            print("NOBUON_CHECK_MEMBER_STATE: 重生與檢查英傑人數並叫出設定")
+            nb_context.setRun(False)
         case _:
           break
     time.sleep(0.4)

@@ -20,6 +20,7 @@ class NobuOnState(Enum):
     NOBUON_EXIT_DUNG_STATE = auto()
     NOBUON_CHOOSE_FLOOR_STATE = auto()
     NOBUON_FIND_ENTERANCE_STATE = auto()
+    NOBUON_CHECK_MEMBER_STATE = auto()
 
 class NobuOnContext:
     def __init__(self, hwnd, app, run=True):
