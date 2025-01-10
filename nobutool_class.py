@@ -21,6 +21,7 @@ class NobuOnState(Enum):
     NOBUON_CHOOSE_FLOOR_STATE = auto()
     NOBUON_FIND_ENTERANCE_STATE = auto()
     NOBUON_CHECK_MEMBER_STATE = auto()
+    NOBUON_ENDCOMBAT_ITEMSELECT_STATE = auto()
 
 class NobuOnContext:
     def __init__(self, hwnd, app, run=True):
@@ -76,6 +77,19 @@ class CombatState:
     def checkEndCombatState_test(self):
         rect = self.context.getRect()
         if nbut.nobu_is_out_combat_test(rect):
+            t1 = time.time()
+            while (time.time() - t1) < 1: #keep checking in 0.5 sec
+                time.sleep(0.2)
+                if not nbut.nobu_is_out_combat_test(rect):
+                    return False
+            
+            return True
+        else:
+            return False
+    
+    def checkDeadCombatState(self):
+        rect = self.context.getRect()
+        if nbut.nobu_is_dead_combat(rect):
             t1 = time.time()
             while (time.time() - t1) < 1: #keep checking in 0.5 sec
                 time.sleep(0.2)

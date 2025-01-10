@@ -16,6 +16,28 @@ dg_dream1_mode=(NobuOnState.NOBUON_MOVE_ENTER_STATE, NobuOnState.NOBUON_INCOMBAT
 dg_dream1_floor_mode=(NobuOnState.NOBUON_FIND_ENTERANCE_STATE, NobuOnState.NOBUON_MOVE_STATE,NobuOnState.NOBUON_CHOOSE_FLOOR_STATE, NobuOnState.NOBUON_INCOMBAT_STATE,
                          NobuOnState.NOBUON_ENDCOMBAT_STATE, NobuOnState.NOBUON_EXIT_DUNG_STATE)
 dg_auto_combat_mode=(NobuOnState.NOBUON_MOVE_STATE, NobuOnState.NOBUON_INCOMBAT_STATE,NobuOnState.NOBUON_ENDCOMBAT_STATE)
+
+def nobu_war_artillery_func(nb_context):
+   #rect = win32gui.GetWindowRect(curHwnd)
+   nb_context.setRun(True)
+
+   cb_state = CombatState(nb_context)
+   img = "合戰砲擊強度.png"
+      
+   mode_idx = 0
+   timeWD = time.time()
+
+   while nb_context.getRun():
+    pos = nbut.nobu_imagesearch(nb_context.getRect(), img, 0.8)
+    if pos[0] != -1:
+        print("Find img. x: %d y: %d" % (pos[0], pos[1]))
+        #nobu_click_pos(pos, "left", 5)
+        nbut.nobu_send_key(nb_context.getHwnd(),nb_context.getApp(),"ENTER")
+        time.sleep(5)
+    else:
+        nbut.nobu_send_key(nb_context.getHwnd(),nb_context.getApp(), "F8")
+        time.sleep(1)
+
 #冥宮
 '''
 1. #w->enter->check in combat
@@ -48,8 +70,8 @@ def nobu_dg_dream1_func(nb_context, floor=0):
         case NobuOnState.NOBUON_MOVE_ENTER_STATE:
             nbut.nobu_send_key(curHwnd,curApp,"ENTER")
             nbut.nobu_send_key(curHwnd,curApp,"w",0.3)
-            #print("NOBUON_MOVE_ENTER_STATE: time: "+str(time.time()))
-            if time.time()-timeWD > 5*60:
+            #print("NOBUON_MOVE_ENTER_STATE: time diff: "+str(time.time()-timeWD))
+            if time.time()-timeWD > 8*60:
                print("NOBUON_MOVE_ENTER_STATE: 可能掛點，開始檢查隊友人數與狀態回復")
                #nb_context.setRun(False)
                curMode = NobuOnState.NOBUON_CHECK_MEMBER_STATE
@@ -84,7 +106,7 @@ def nobu_dg_dream1_func(nb_context, floor=0):
             nbut.nobu_send_key(curHwnd,curApp,"w", 0.2)
             nbut.nobu_send_key(curHwnd,curApp,"ENTER")
 
-            if time.time()-timeWD > 5*60:
+            if time.time()-timeWD > 8*60:
                print("NOBUON_NEXTFLOOR_STATE: 可能掛點，開始檢查隊友人數與狀態回復")
                now = datetime.datetime.now()
                dateTime = now.strftime("%Y-%m-%d, %H:%M:%S")

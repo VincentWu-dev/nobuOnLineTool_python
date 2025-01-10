@@ -120,6 +120,13 @@ def nobu_is_out_combat_test(rect):
     else:
         return False
 
+def nobu_is_dead_combat(rect):
+    pos = nobu_imagesearch(rect, "./img/成佛對話.png", 0.8)
+    if pos[0] != -1:
+        return True
+    else:
+        return False
+
 def nobu_loop_turn(nb_context,turn_dir:str, direction: str):
     imgList = list()
     for i in range(0,3):

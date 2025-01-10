@@ -16,7 +16,7 @@ import datetime
 nobu_hWndDict ={}
 #使用物品->第一個物品
 nobu_combat_action_useItem=("k","k","k","k","ENTER","ENTER")
-
+nobu_combat_action_useItem2=("k","k","k","ENTER","ENTER")
 
 #win32con.VK_RETURN
 '''
@@ -92,7 +92,6 @@ def nobu_template_func(nb_context):
           if cb_state.checkEndCombatState():
             print("Combat END!!")
             curMode = 2
-          
         case _:
           break
     time.sleep(0.3)
@@ -130,5 +129,9 @@ if __name__ == '__main__':
             nbf.nobu_auto_combat_func(nb_context, nobu_combat_action_useItem)
         case 3:
             nobu_template_func(nb_context)
+        case 4: #合戰大砲
+            nbf.nobu_war_artillery_func(nb_context)
+        case 5: #戰鬥開始自動出招與結束出戰鬥/技能無特殊
+            nbf.nobu_auto_combat_func(nb_context, nobu_combat_action_useItem2)
         case _:
             print("No cmd to run")
